@@ -45,7 +45,13 @@ public class Subscriber {
 		long fixedTextLength=fixedText.length();
 		long originalLength=orderDetails.length();
 		
-		if(originalLength<=fixedTextLength){
+		if(expectedLength==0){
+			return orderDetails;
+		}
+		else if (expectedLength <= fixedTextLength){
+			return "Error : Expected length paramteter is too small";
+		}
+		else if(originalLength<=fixedTextLength){
 			return orderDetails;
 		}
 		else if(originalLength<=expectedLength){

@@ -1,0 +1,3 @@
+the number is ${i}
+the number  ${i}
+the word is ${word}
