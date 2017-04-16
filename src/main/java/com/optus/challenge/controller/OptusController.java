@@ -36,7 +36,7 @@ public class OptusController implements ErrorController{
 				return getErrorResponse("Invalid order details - value expected");
 			}
 						
-	      return subscriber.run( orderDetails,Long.valueOf(length));
+	      return subscriber.run( orderDetails,Integer.valueOf(length));
 	}
 	
 	private Map getErrorResponse(String value){

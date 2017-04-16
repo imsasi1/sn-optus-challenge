@@ -27,7 +27,7 @@ public class Subscriber {
 	 * @throws ExecutionException
 	 * @throws IOException
 	 */
-	public synchronized Map<String, String> run(String orderDetails,long length) throws InterruptedException, ExecutionException, IOException {
+	public synchronized Map<String, String> run(String orderDetails,int length) throws InterruptedException, ExecutionException, IOException {
 		Map<String, String> result = new HashMap<>();
 		String text= truncate(orderDetails,length);
 		result.put("Log ", text);
@@ -40,17 +40,17 @@ public class Subscriber {
 	 * @param expectedLength
 	 * @return
 	 */
-	private String truncate(String orderDetails,long expectedLength){
+	private String truncate(String orderDetails,int expectedLength){
 		
-		long fixedTextLength=fixedText.length();
-		long originalLength=orderDetails.length();
+		int fixedTextLength=fixedText.length();
+		int originalLength=orderDetails.length();
 		
 		if(expectedLength==0){
 			return orderDetails;
 		}
-		else if (expectedLength <= fixedTextLength){
+		/*else if (expectedLength <= fixedTextLength){
 			return "Error : Expected length paramteter is too small";
-		}
+		}*/
 		else if(originalLength<=fixedTextLength){
 			return orderDetails;
 		}
@@ -60,10 +60,33 @@ public class Subscriber {
 		else if(originalLength > expectedLength){
 			
 			if(originalLength>fixedTextLength){
-				
-				if(originalLength-fixedTextLength >=4){
+				/*if(originalLength-fixedTextLength >=4){
 					return getShortTest(orderDetails);
+				}*/
+				System.out.println("----0000------ "+orderDetails);
+				StringBuffer text= new StringBuffer(orderDetails);
+				int diff=originalLength-expectedLength;
+				int mid=Math.abs(originalLength/2);
+				System.out.println("Diff "+diff+" Mid "+mid);
+				int start=0;
+				if(diff%2 == 0){
+					start=mid - Math.abs(diff/2);
 				}
+				else{
+					start=mid - Math.abs(diff/2)-1;
+				}
+				int end=mid + Math.abs(diff/2);
+				text.delete(start, end);
+				System.out.println("Start "+start+" End "+end);
+				System.out.println("----1111------ "+text.toString());
+				int mid1=Math.abs(text.length()/2);
+				System.out.println("Mid1 "+mid1);
+				int start1=mid1 - Math.abs(fixedTextLength/2);
+				int end1=mid1 + Math.abs(fixedTextLength/2);
+				text.replace(start1, end1, fixedText);
+				System.out.println("Start1 "+start+" End1 "+end);
+				System.out.println("----2222------ "+text.toString());
+				return text.toString();
 			}
 			
 		}
