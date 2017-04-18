@@ -1,4 +1,4 @@
-# sn-optus-challenge
+# Readme - sn-optus-challenge
 
 # Question-1
 # Runnable jar location : /target/sn-optus-challenge-0.0.1-SNAPSHOT.jar (Requirement Java 8). The jar is loaded with built in server that will listen to port 8003
@@ -7,4 +7,4 @@
 # Example : http://localhost:8003/subscribe/123456789012345678901234567890/31
 
 # Question-2
-# Please see readem.txt in /shell-script
+# Please see readme.txt inside /shell-scripts directory
