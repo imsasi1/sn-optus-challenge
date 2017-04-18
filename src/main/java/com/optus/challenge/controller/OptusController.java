@@ -24,7 +24,13 @@ public class OptusController implements ErrorController{
 	private Subscriber subscriber;
 	
 	private static final String PATH = "/error";
-	
+	/**
+	 * Request mapping entry
+	 * @param orderDetails
+	 * @param length
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/subscribe/{orderDetails}/{length}")
 	public @ResponseBody Map<String, String> runTemplateJob(@PathVariable("orderDetails") String orderDetails,
 			@PathVariable("length") String length) throws Exception {
@@ -38,14 +44,21 @@ public class OptusController implements ErrorController{
 						
 	      return subscriber.run( orderDetails,Integer.valueOf(length));
 	}
-	
-	private Map getErrorResponse(String value){
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private Map<String, String> getErrorResponse(String value){
 		Map<String, String> result = new HashMap<>();
 		result.put("Error", value);
 		return result;
 	}
 	
-	
+	/**
+	 * Error handling
+	 * @return
+	 */
 	@RequestMapping(value = PATH)
     public String error() {
 		StringBuffer txt= new StringBuffer(System.getProperty("line.separator"));
@@ -55,7 +68,9 @@ public class OptusController implements ErrorController{
 		txt.append("Example http://localhost:8003/subscribe/0123456789012345678901234567890123456789/30");
 		return txt.toString();
     }
-	
+	/**
+	 * Error path
+	 */
 	@Override
 	public String getErrorPath() {
 		return PATH;

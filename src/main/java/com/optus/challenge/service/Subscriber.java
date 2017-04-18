@@ -19,7 +19,7 @@ public class Subscriber {
 	private String fixedText;
 	
 	/**
-	 *    
+	 * /subscribe  processor
 	 * @param orderDetails
 	 * @param length
 	 * @return
@@ -35,54 +35,87 @@ public class Subscriber {
 	}
 
 	/**
-	 * 
+	 * truncates and returns string as per given length
 	 * @param orderDetails
 	 * @param expectedLength
 	 * @return
 	 */
 	private String truncate(String orderDetails,int expectedLength){
-		System.out.println("--INPUT--> "+orderDetails);
+		System.out.println("");
+		System.out.println("truncate("+orderDetails+", "+expectedLength+")");
 		int fixedTextLength=fixedText.length();
 		int originalLength=orderDetails.length();
 		
 		if(expectedLength==0){
-			System.out.println("--OUTPUT--> "+orderDetails);
+			System.out.println(orderDetails);
+			return orderDetails;
+		}
+		if(expectedLength<=fixedTextLength){
+			System.out.println(orderDetails);
 			return orderDetails;
 		}
 		else if(originalLength<=fixedTextLength){
-			System.out.println("--OUTPUT--> "+orderDetails);
+			System.out.println(orderDetails);
 			return orderDetails;
 		}
 		else if(originalLength<=expectedLength){
-			System.out.println("--OUTPUT--> "+orderDetails);
+			System.out.println(orderDetails);
 			return orderDetails;
 		}
 		else if(originalLength > expectedLength){
 			
 			if(originalLength>fixedTextLength){
-				StringBuffer text= new StringBuffer(orderDetails);
-				int diff=originalLength-expectedLength;
-				int mid=Math.abs(originalLength/2);
-				int start=0;
-				if(diff%2 == 0){
-					start=mid - Math.abs(diff/2);
-				}
-				else{
-					start=mid - Math.abs(diff/2)-1;
-				}
-				int end=mid + Math.abs(diff/2);
-				text.delete(start, end);
-				int mid1=Math.abs(text.length()/2);
-				int start1=mid1 - Math.abs(fixedTextLength/2);
-				int end1=mid1 + Math.abs(fixedTextLength/2);
-				text.replace(start1, end1, fixedText);
-				System.out.println("--OUTPUT--> "+text.toString());
-				return text.toString();
+				String text= process(orderDetails,expectedLength);
+				System.out.println(text);
+				return text;
 			}
 			
 		}
 		return null;
 	}
-		
+	
+	/**
+	 * core logic
+	 * @param original
+	 * @param length
+	 * @return
+	 */
+	private String process(String original, int length){
+		int fixedTextLength=fixedText.length();
+		int originalLength=original.length();
+		StringBuffer text= new StringBuffer(original);
+		int mid=Math.abs(originalLength/2);
+		text.insert(mid, fixedText);
+		boolean flag1=true;
+		boolean flag2=false;
+		int safeExit=1000;
+		int counter = 0;
+		while(true){
+			counter++;
+			if(text.length()==length){
+				return text.toString();
+			}
+			if(flag1){
+				mid=mid-1;
+				if(mid<=0){
+					break;
+				}
+				text.deleteCharAt(mid);
+				flag2=true;
+				flag1=false;
+				continue;
+			}
+			if(flag2){
+				text.deleteCharAt(text.indexOf(fixedText)+fixedTextLength);
+				flag1=true;
+				flag2=false;
+				continue;
+			}
+			if(counter>=safeExit){	
+				return "Processing Error";
+			}
+		}
+		return text.toString();
+	}
 
 }
